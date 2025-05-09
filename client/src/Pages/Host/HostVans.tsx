@@ -7,13 +7,13 @@ const HostVans = () => {
     const [hostVansData, setHostVansData] = useState<VansType[] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<ErrorType | null>(null);
-    const [showForm, setShowForm] = useState(false);
-    const [formData, setFormData] = useState({
+    const [isCreating, setIsCreating] = useState(false);
+    const [newVan, setNewVan] = useState<Omit<VansType, 'id'>>({
         name: '',
-        price: '',
+        price: 0,
         description: '',
-        type: 'Simple',
-        imageUrl: ''
+        imageUrl: '',
+        type: 'simple'
     });
 
     useEffect(() => {
@@ -21,7 +21,6 @@ const HostVans = () => {
             try {
                 const data = await getHostVans()
                 setHostVansData(data as VansType[]);
-                setError(null)
             } catch (error) {
                 setError(error as ErrorType);
             } finally {
@@ -31,25 +30,33 @@ const HostVans = () => {
         fetchData();
     }, []);
 
+    const handleCreate = () => {
+        setIsCreating(true);
+    };
+
+    const handleCancel = () => {
+        setIsCreating(false);
+        setNewVan({
+            name: '',
+            price: 0,
+            description: '',
+            imageUrl: '',
+            type: 'Simple'
+        });
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const newVan = await createVan({
-                name: formData.name,
-                price: Number(formData.price),
-                description: formData.description,
-                type: formData.type as 'Simple' | 'Luxury' | 'Rugged',
-                imageUrl: formData.imageUrl
-            });
-            setHostVansData(prev => prev ? [...prev, newVan] : [newVan]);
-            setShowForm(false);
-            setError(null)
-            setFormData({
+            const createdVan = await createVan(newVan);
+            setHostVansData(prev => prev ? [...prev, createdVan] : [createdVan]);
+            setIsCreating(false);
+            setNewVan({
                 name: '',
-                price: '',
+                price: 0,
                 description: '',
-                type: 'Simple',
-                imageUrl: ''
+                imageUrl: '',
+                type: 'imple'
             });
         } catch (error) {
             setError(error as ErrorType);
@@ -58,97 +65,112 @@ const HostVans = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+        setNewVan(prev => ({
             ...prev,
-            [name]: value
+            [name]: name === 'price' ? Number(value) : value
         }));
     };
-
-    if (loading) {
+    
+    if(loading) {
         return <div>Loading......</div>
+    }
+    
+    if(error) {
+        return <div>Error: {error.message}</div>
     }
 
     return (
         <div className="listed-vans">
             <div className="head">
                 <p>Your Listed Vans</p>
-                <button 
-                    onClick={() => setShowForm(true)}
-                    className="add-van-btn"
-                >
-                   +  Add New Van
-                </button>
+                {!isCreating && (
+                    <button onClick={handleCreate} className="add-van-button">
+                        + Add Van
+                    </button>
+                )}
             </div>
-            {
-                error && <div>Error: {error.message}</div>
-            }
-            {showForm && (
-                <div className="add-van-form">
-                    <h2>Add New Van</h2>
-                    <form onSubmit={handleSubmit}>
+            {isCreating ? (
+                <form onSubmit={handleSubmit} className="create-van-form">
+                    <div className="form-group">
+                        <label htmlFor="name">Name:</label>
                         <input
                             type="text"
+                            id="name"
                             name="name"
-                            placeholder="Van Name"
-                            value={formData.name}
+                            value={newVan.name}
                             onChange={handleChange}
                             required
                         />
-                        <input
-                            type="number"
-                            name="price"
-                            placeholder="Price per day"
-                            value={formData.price}
-                            onChange={handleChange}
-                            required
-                        />
-                        <textarea
-                            name="description"
-                            placeholder="Description"
-                            value={formData.description}
-                            onChange={handleChange}
-                            required
-                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="type">Type:</label>
                         <select
+                            id="type"
                             name="type"
-                            value={formData.type}
+                            value={newVan.type}
                             onChange={handleChange}
                             required
                         >
                             <option value="Simple">Simple</option>
-                            <option value="Luxury">Luxury</option>
                             <option value="Rugged">Rugged</option>
+                            <option value="Luxury">Luxury</option>
                         </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="price">Price:</label>
                         <input
-                            type="text"
-                            name="imageUrl"
-                            placeholder="Image URL"
-                            value={formData.imageUrl}
+                            type="number"
+                            id="price"
+                            name="price"
+                            value={newVan.price}
                             onChange={handleChange}
                             required
                         />
-                        <div className="form-buttons">
-                            <button type="submit">Add Van</button>
-                            <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            )}
-            {hostVansData?.map((van) =>
-            van?._id ? (
-                <Link to={van._id} key={van._id}>
-                <div className="van-box verti-center">
-                    <img src={van.imageUrl} alt={van.name} />
-                    <div className="van-explain">
-                    <p>{van.name}</p>
-                    <p>{van.price}/day</p>
                     </div>
-                    <p>Edit</p>
-                </div>
-                </Link>
-            ) : null
+                    <div className="form-group">
+                        <label htmlFor="description">Description:</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            value={newVan.description}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="imageUrl">Image URL:</label>
+                        <input
+                            type="text"
+                            id="imageUrl"
+                            name="imageUrl"
+                            value={newVan.imageUrl}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-buttons">
+                        <button type="submit" className="save-button">
+                            Create Van
+                        </button>
+                        <button type="button" onClick={handleCancel} className="cancel-button">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            ) : (
+                hostVansData?.map((van) => van._id ? (
+                    <Link to={van._id} key={van._id}>
+                        <div className="van-box verti-center">
+                            <img src={van.imageUrl} alt={van.name} />
+                            <div className="van-explain">
+                                <p>{van.name}</p>
+                                <p>{van.price}/day</p>
+                            </div>
+                            <p>View</p>
+                        </div>
+                    </Link>
+                ) : null)
             )}
-
         </div>
     )
 }
