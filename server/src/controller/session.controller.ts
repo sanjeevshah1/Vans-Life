@@ -14,6 +14,7 @@ export interface UserDocument extends UserInput, mongoose.Document {
     createdAt : Date;
     updatedAt: Date;
     comparePassword(candidatePassword: string) : Promise<boolean>;
+    role: 'user' | 'host';
 }
 
 export async function createUserSessionHandler(req: Request<{},{},createSessionSchemaType["body"]>, res: Response) : Promise<void>{ 
@@ -22,15 +23,16 @@ export async function createUserSessionHandler(req: Request<{},{},createSessionS
 
     const validatedUser = await validatePassword(req.body);
     if(!validatedUser) {
-        res.status(401).send("Invalid email or password");
+        res.status(401).json({message: "Invalid email or password"});
         return;
     }
 
     //2. Create the session.
     const user = await validatePassword(req.body);
-    if(user === false) res.status(401).send("Invalid email or password");
+    if(user === false) res.status(401).json({message: "Invalid email or password"});
 
    const newUser = user as Omit<UserDocument, "password">
+   const {role} = newUser;
    const id = newUser._id as mongoose.Types.ObjectId;
    const stringifiedId = id.toString();
     const session = await createSession(stringifiedId, req.get("user-agent") || "");
@@ -50,12 +52,13 @@ export async function createUserSessionHandler(req: Request<{},{},createSessionS
           expiresIn: "30d"  
     });
 
-    //5. Send access token and refresh token in the response
-    const tokens = {
+    //5. Send access token, refresh token, & role in the response
+  
+    res.status(201).send({
         accessToken,
-        refreshToken
-    }
-    res.status(201).send(tokens);
+        refreshToken,
+        role
+    });
 }
 
 export async function getSessionHandler(req: Request, res: Response) : Promise<void>{

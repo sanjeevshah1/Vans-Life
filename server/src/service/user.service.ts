@@ -1,4 +1,4 @@
-import { DecodedUser, UserDeleteInput, UserInput, UserWithoutPassword } from "../types";
+import { DecodedUser, UserInput, UserWithoutPassword } from "../types";
 import User from "../models/user.model";
 import {omit} from "lodash"
 import bcrypt from "bcrypt"
@@ -9,7 +9,8 @@ import mongoose, { FilterQuery } from "mongoose";
 
 export async function getUsers(){
     try{
-      return await User.find();
+      const users = await User.find({role : "user"});
+      return users.map((user) => omit(user.toJSON(), "password"))
     }catch(error : unknown){
       if(error instanceof Error){
           throw new Error(error.message);
@@ -68,15 +69,12 @@ export async function createUser(input: UserInput){
     }
 }
 
-export async function deleteUser(input: UserDeleteInput) {
+export async function deleteUser(id: string) {
   try {
-    const user = await User.findOne({ email: input.email });
+    const user = await User.findOne({ _id : id });
     if (!user) throw new Error("User not found");
 
-    const isMatch = await user.comparePassword(input.password);
-    if (!isMatch) throw new Error("Password does not match");
-
-    return await User.deleteOne({ email: input.email });
+    return await User.deleteOne({ _id : id });
     
   } catch (error: unknown) {
     if (error instanceof Error) {

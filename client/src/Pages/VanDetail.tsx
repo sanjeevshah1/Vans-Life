@@ -7,11 +7,12 @@ import PageNotFound from "./PageNotFound.js";
 
 const VanDetail = () => {
   const { id } = useParams<{id: string}>();
+  console.log("the id is", id)
   const [vanDetail, setVanDetail] = useState<VansType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(null);
   const location = useLocation()
-  if (!id || isNaN(Number(id))) {
+  if (!id) {
     return <PageNotFound/>
   }
   useEffect( () => {
@@ -45,9 +46,9 @@ const VanDetail = () => {
   }
 
   let backgroundColor:string = "";
-          if (vanDetail.type === "simple") {
+          if (vanDetail.type === "Simple") {
             backgroundColor = "#E17654";
-          } else if (vanDetail.type === "rugged") {
+          } else if (vanDetail.type === "Rugged") {
             backgroundColor = "#115E59";
           } else {
             backgroundColor = "#161616";

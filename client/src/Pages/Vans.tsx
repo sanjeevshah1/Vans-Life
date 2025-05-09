@@ -21,13 +21,6 @@ const Vans: React.FC = () => {
       return prevParams
     })
   } 
-  
-  // const handleClick = (event:React.MouseEvent<HTMLButtonElement>) =>{
-  //   const {value} = event.currentTarget;
-  //   setSearchParams({type: value.toLowerCase()});
-  // } 
-
-  
 
   useEffect( () => {
     const fetchData = async () => {
@@ -59,9 +52,9 @@ const Vans: React.FC = () => {
       <h2>Explore our van options</h2>
       <div className="filters flex">
         <div className="buttons flex">
-          <button onClick={() => handleClick("type","simple")} style={typeFilter === "simple" ? {backgroundColor: "#E17654", color: "white" } : {}} >Simple</button>
-          <button onClick={() => handleClick("type","luxury")} style={typeFilter === "luxury" ? {backgroundColor: "#161616", color: "white" } : {}}>Luxury</button>
-          <button onClick={() => handleClick("type","rugged")} style={typeFilter === "rugged" ? {backgroundColor: "#115E59", color: "white" } : {}}>Rugged</button>
+          <button onClick={() => handleClick("type","Simple")} style={typeFilter === "Simple" ? {backgroundColor: "#E17654", color: "white" } : {}} >Simple</button>
+          <button onClick={() => handleClick("type","Luxury")} style={typeFilter === "Luxury" ? {backgroundColor: "#161616", color: "white" } : {}}>Luxury</button>
+          <button onClick={() => handleClick("type","Rugged")} style={typeFilter === "Rugged" ? {backgroundColor: "#115E59", color: "white" } : {}}>Rugged</button>
           {/* <button onClick={handleClick} value="simple">Simple</button>
           <button onClick={handleClick} value="luxury">Luxury</button>
           <button onClick={handleClick} value="rugged">Rugged</button> */}
@@ -71,23 +64,26 @@ const Vans: React.FC = () => {
       <div className="actual-van-container verti-center">
         {filteredVans.map((van) => {
           let backgroundColor:string = "";
-          if (van.type === "simple") {
+          if (van.type === "Simple") {
             backgroundColor = "#E17654";
-          } else if (van.type === "rugged") {
+          } else if (van.type === "Rugged") {
             backgroundColor = "#115E59";
           } else {
             backgroundColor = "#161616";
           }
           return (
-            <div className="van" key={van.id}>
-              <Link to={van.id} state={{search: searchParams.toString(), type: typeFilter}}>
-                <img src={van.imageUrl} alt={van.name} />
-                <div className="item-money flex">
-                  <p>{van.name}</p>
-                  <p>${van.price}/day</p>
-                </div>
-                <button style={{backgroundColor}}>{van.type.charAt(0).toUpperCase() + van.type.slice(1)}</button>
-              </Link>
+            <div className="van" key={van._id}>
+                {van._id && (
+                  <Link to={van._id} state={{search: searchParams.toString(), type: typeFilter}}>
+                  <img src={van.imageUrl} alt={van.name} />
+                  <div className="item-money flex">
+                    <p>{van.name}</p>
+                    <p>${van.price}/day</p>
+                  </div>
+                  <button style={{backgroundColor}}>{van.type.charAt(0).toUpperCase() + van.type.slice(1)}</button>
+                </Link>
+                )}
+               
             </div>
           );
         })}

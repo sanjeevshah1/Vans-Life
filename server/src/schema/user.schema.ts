@@ -22,6 +22,12 @@ export const createUserSchema = z.object({
 export type CreateUserInput = TypeOf<typeof createUserSchema>    
 
 export const deleteUserSchema = z.object({
+    params: z.object({
+      id: z.string().min(1, "User ID is required").regex(/^[0-9a-fA-F]{24}$/, "Invalid MongoDB ObjectId"),
+    }),
+});
+
+export const deleteUserSchema2 = z.object({
     body: z.object({
         email : z.string({
             required_error : "Email is required"
@@ -31,8 +37,7 @@ export const deleteUserSchema = z.object({
         }).min(6, "Password must be at least 6 characters"),
     })
 })
-
-export type DeleteUserInput = TypeOf<typeof deleteUserSchema>
+export type DeleteUserInput2 = TypeOf<typeof deleteUserSchema2>
 
 export const updateUserSchema = z.object({
     body: z.object({

@@ -32,7 +32,16 @@ const Login = () => {
                 console.log(response)
                 setError(null);
                 localStorage.setItem("isLoggedIn", JSON.stringify(true));
-                navigate(location.state?.path || "/host", {replace : true})
+                localStorage.setItem("accessToken", response.accessToken);
+                if(response.role === "host"){
+                    localStorage.setItem("isHost", JSON.stringify(true));
+                    navigate(location.state?.path || "/host", {replace : true})
+                }
+                if(response.role === "user"){
+                    localStorage.setItem("isHost", JSON.stringify(true));
+                    navigate(location.state?.path || "/vans", {replace : true})
+                }
+                localStorage.setItem("isLoggedIn", JSON.stringify(true));
             }catch(error){
                 console.log(error)
                 setError(error as ErrorType) 

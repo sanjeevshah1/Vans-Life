@@ -23,7 +23,3 @@ export interface SessionDocument extends mongoose.Document{
 export type UserWithoutPassword = Omit<UserDocument, "password">;
 export type DecodedUser = UserWithoutPassword & {session: SessionDocument["_id"]};
 
-export interface UserDeleteInput{
-    email : string;
-    password : string;
-}

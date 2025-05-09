@@ -3,7 +3,7 @@ import fs from 'fs';
     const privateKey =fs.readFileSync("./private.pem",'utf-8');
 export default {
     "port" : 1337,
-    'dbUrl' : "mongodb://localhost:27017/backend-with-typescript",
+    'dbUrl' : "mongodb://localhost:27017/vans-life",
     'saltWorkFactor' : 10,
     'publicKey' : publicKey,
     'privateKey' : privateKey,

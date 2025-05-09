@@ -1,6 +1,6 @@
 import {Request, Response} from "express"
 import {getUsers,createUser,deleteUser,updateUser} from "../service/user.service";
-import { CreateUserInput, DeleteUserInput, UpdateUserSchemaType } from "../schema/user.schema";
+import { CreateUserInput, UpdateUserSchemaType } from "../schema/user.schema";
 
 export const getUserHandler = async (req: Request, res: Response)  : Promise<void> => {
   console.log("getUserHandler executing");
@@ -46,12 +46,12 @@ export const createUserHandler = async (req: Request<{},{},CreateUserInput["body
 }
 
 export const deleteUserHandler = async (
-    req: Request<{}, {}, DeleteUserInput["body"]>,
+    req: Request,
     res: Response
   )  : Promise<void> => {
     console.log("deleteUserHandler executing");
     try {
-      const deletedUser = await deleteUser(req.body);
+      const deletedUser = await deleteUser(req.params.id);
       res.status(200).send(deletedUser);
 
     } catch (error: unknown) {
@@ -60,10 +60,6 @@ export const deleteUserHandler = async (
         if (message === "User not found") {
           res.status(404).send(message); // Not Found
         }
-        if (message === "Password does not match") {
-          res.status(401).send(message); // Unauthorized
-        }
-
         res.status(400).send(message); // Bad Request
       } else {
         // Generic fallback for unknown errors

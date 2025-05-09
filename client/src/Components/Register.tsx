@@ -1,73 +1,225 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
+import "./Register.css";
 
 const Register = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
+    confirmPassword: "",
+    userType: "user" // Default to "user"
   });
+  
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name] : value
-    }))
+      ...prevFormData,
+      [name]: value
+    }));
+  };
+
+  const handleUserTypeChange = (value: string) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      userType: value
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Registering user:", formData);
-    try{
-        const res = await fetch('http://localhost:1337/api/users',{
-            method: "POST",
-            headers : {
-                "Content-Type" : "application/json",
-            },
-            body: JSON.stringify(formData)
-        })
-        if(!res.ok){
-            throw new Error("User Registration failed")
-        }
-        navigate("login", {replace: true})
+    
+    // Validate password confirmation
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords don't match");
+      return;
+    }
 
-    }catch(error : unknown){
-        alert(`Error: ${(error instanceof Error) ? error.message : "Unknown error"}`);
+    // Password validation - at least 8 characters
+    if (formData.password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+
+    console.log("Registering user:", formData);
+    setIsLoading(true);
+    
+    try {
+      // Send without confirmPassword
+      const { confirmPassword, ...dataToSend } = formData;
+      
+      const res = await fetch('http://localhost:1337/api/users', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend)
+      });
+      
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        throw new Error(errorData?.message || "User Registration failed");
+      }
+      
+      toast.success("Registration successful!");
+      navigate("/login", { replace: true });
+    } catch (error: unknown) {
+      toast.error(`Error: ${(error instanceof Error) ? error.message : "Unknown error"}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="register-container">
-      <h2>Create an Account</h2>
-      <form className="register-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          required
-          value={formData.name}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <button type="submit">Register</button>
-      </form>
+      <div className="register-card">
+        <div className="register-card-header">
+          <h2 className="register-card-title">Create an Account</h2>
+          <p className="register-card-description">
+            Enter your details to register
+          </p>
+        </div>
+        <div className="register-card-content">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label" htmlFor="name">Full Name</label>
+              <input
+                className="form-input"
+                id="name"
+                type="text"
+                name="name"
+                placeholder="John Doe"
+                required
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label" htmlFor="email">Email</label>
+              <input
+                className="form-input"
+                id="email"
+                type="email"
+                name="email"
+                placeholder="john@example.com"
+                required
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label" htmlFor="password">Password</label>
+              <div className="password-input-container">
+                <input
+                  className="form-input"
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="••••••••"
+                  required
+                  minLength={8}
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                <button 
+                  type="button"
+                  className="password-toggle-button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
+              <div className="password-input-container">
+                <input
+                  className="form-input"
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="••••••••"
+                  required
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+                <button 
+                  type="button"
+                  className="password-toggle-button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Register as</label>
+              <div className="radio-group">
+                <div className="radio-item">
+                  <input
+                    className="radio-button"
+                    type="radio"
+                    id="user"
+                    name="userType"
+                    value="user"
+                    checked={formData.userType === "user"}
+                    onChange={() => handleUserTypeChange("user")}
+                  />
+                  <label htmlFor="user">User</label>
+                </div>
+                <div className="radio-item">
+                  <input
+                    className="radio-button"
+                    type="radio"
+                    id="host"
+                    name="userType"
+                    value="host"
+                    checked={formData.userType === "host"}
+                    onChange={() => handleUserTypeChange("host")}
+                  />
+                  <label htmlFor="host">Host</label>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              type="submit" 
+              className="register-button"
+              disabled={isLoading}
+            >
+              {isLoading ? "Registering..." : "Register"}
+            </button>
+          </form>
+        </div>
+        <div className="register-card-footer">
+          <p className="footer-text">
+            Already have an account?{" "}
+            <a 
+              href="/login" 
+              className="login-link"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/login");
+              }}
+            >
+              Sign in
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

@@ -10,6 +10,7 @@ const Header = () => {
     setMenuOpen(!menuOpen);
   };
   const isLoggedIn: boolean = JSON.parse(localStorage.getItem("isLoggedIn") || "false");
+  const isHost: boolean = JSON.parse(localStorage.getItem("isHost") || "false");
   return (
     <header className="nav-bar verti-center">
       <div className="temporary">
@@ -25,12 +26,13 @@ const Header = () => {
         >
           Home
         </NavLink>
-        <NavLink
+        {isHost && <NavLink
           to="host"
           className={({ isActive }) => (isActive ? "current-link" : "")}
         >
           Host
-        </NavLink>
+        </NavLink>}
+        
         <NavLink
           to="about"
           className={({ isActive }) => (isActive ? "current-link" : "")}
@@ -55,6 +57,8 @@ const Header = () => {
           id="log-out"
           onClick={() => {
             localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("isHost");
             navigate("/login");
           }}
         >

@@ -1,6 +1,6 @@
 export interface VansType {
     description: string;
-    id: string;
+    _id?: string;
     imageUrl: string;
     name: string;
     price: number;

@@ -59,7 +59,7 @@ const Dashboard = () => {
                         <p>{van.name}</p>
                         <p>{van.price}/day</p>
                     </div>
-                <p>Edit</p>
+                <p>View</p>
                 </div>
             ))}
         </div>

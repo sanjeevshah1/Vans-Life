@@ -16,6 +16,7 @@ html, body{
   --simple-color: #E17654;
   --luxury-color: #161616;
   --backgroundColor: #FFF7ED;
+  --backgroundColor2: #fffaf5;
   --buttonColor:#FF8C38;
   --footerBackgroundColor:  #252525;
   --footerTextColor: #AAAAAA;
@@ -26,12 +27,15 @@ html, body{
   --linkColor: black;
   --whiteBlack: white;
   --blackWhite: black;
+  --usersTitleColor: #1e293b;
+  --usersSubtitleColor: #72869c;
 }
 .dark-mode {
   --rugged-color: #0D4B46; /* Darker Teal */
   --simple-color: #C56448; /* Darker Coral */
   --luxury-color: #0D0D0D; /* Very Dark Gray */
   --backgroundColor: #1E1E1E; /* Dark Gray for Background */
+  --backgroundColor2: #1f1e1e; /* Dark Gray for Background */
   --buttonColor: #CC6E30; /* Darker Orange */
   --footerBackgroundColor: #181818; /* Very Dark Gray */
   --footerTextColor: white; /* Medium Gray */
@@ -42,6 +46,8 @@ html, body{
   --linkColor: white;
   --blackWhite: white;
   --whiteBlack: black;
+  --usersTitleColor: white;
+  --usersSubtitleColor: #c3cbd4;
 }
 p{
   color: var(--blackWhite);
@@ -59,44 +65,7 @@ a{
   align-items: center;
   margin-left: 1.625rem;
 }
-.register-container {
-  width: 100%;
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  text-align: center;
-}
 
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.register-form input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.register-form button {
-  padding: 10px;
-  background-color: #007bff;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.register-form button:hover {
-  background-color: #0056b3;
-}
 
 .switch input {
   opacity: 0;
@@ -843,6 +812,8 @@ margin-bottom: 25px;
   color: var(--buttonColor);
   ;
 }
+
+
 @media screen and (max-width: 675px) {
 
   .about-container{
@@ -914,3 +885,309 @@ margin-bottom: 25px;
     letter-spacing: 3px;
     }
 }
+
+/* Edit Form Styles */
+.edit-form {
+    padding: 2em;
+    background-color: var(--whiteBlack);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 1.5em;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+    color: var(--blackWhite);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: var(--backgroundColor);
+    color: var(--blackWhite);
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1em;
+    margin-top: 2em;
+    position: static;
+}
+
+.save-button,
+.cancel-button {
+    position: static;
+    right: auto;
+    max-width: none;
+    width: auto;
+    padding: 0.75em 1.5em;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.save-button {
+    background-color: var(--buttonColor);
+    color: white;
+}
+
+.cancel-button {
+    background-color: #ccc;
+    color: var(--blackWhite);
+}
+
+.edit-button {
+  padding: 0.55em 0.75em;
+  position: absolute;
+  right: 100px;
+    margin-top: 1em;
+    width: 100px;
+    background-color: var(--buttonColor);
+    color: white;
+}
+
+.save-button:hover,
+.cancel-button:hover,
+.edit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive styles for edit button */
+@media screen and (max-width: 768px) {
+    .save-button,
+    .cancel-button,
+    .edit-button {
+        position: absolute;
+        padding: 0.55em 0.75em;
+        width: 80px;
+        top: 20px;
+        right: 10px;
+    }
+
+    .form-buttons {
+        position: static;
+        justify-content: center;
+    }
+
+    .form-buttons .save-button,
+    .form-buttons .cancel-button {
+        position: static;
+        width: 120px;
+    }
+
+    .first-row {
+        flex-direction: column;
+        position : relative;
+        align-items: flex-start;
+    }
+
+    .temp {
+        width: 100%;
+        margin-top: 1em;
+    }
+
+    .edit-button {
+      position: absolute;
+      padding: 0.55em 0.75em;
+        order: 3; /* This will make it appear after the temp div */
+        width: 80px;
+        top:20px;
+        right: 10px;
+    }
+    .van-type{
+      position: absolute;
+      left: 80px;
+      bottom: 80px;
+    }
+}
+
+.add-van-btn {
+    background-color: #FF8C38;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.add-van-btn:hover {
+    background-color: #FF7B1C;
+}
+
+.add-van-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    max-width: 600px;
+}
+
+.add-van-form h2 {
+    margin-bottom: 20px;
+    color: #161616;
+}
+
+.add-van-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.add-van-form input,
+.add-van-form select,
+.add-van-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #E17654;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.add-van-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.form-buttons button[type="submit"] {
+    background-color: #FF8C38;
+    color: white;
+}
+
+.form-buttons button[type="submit"]:hover {
+    background-color: #FF7B1C;
+}
+
+.form-buttons button[type="button"] {
+    background-color: #E17654;
+    color: white;
+}
+
+.form-buttons button[type="button"]:hover {
+    background-color: #D15A2F;
+}
+
+@media (max-width: 768px) {
+    .add-van-form {
+        padding: 15px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .form-buttons button {
+        width: 100%;
+    }
+}
+
+.image-preview {
+    margin-top: 10px;
+    max-width: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.upload-progress {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--backgroundColor);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--buttonColor);
+    transition: width 0.3s ease;
+}
+
+.upload-status {
+    color: var(--buttonColor);
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 5px;
+}
+
+input[type="file"] {
+    padding: 10px;
+    border: 2px dashed var(--buttonColor);
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    background-color: var(--backgroundColor);
+    color: var(--blackWhite);
+}
+
+input[type="file"]:hover {
+    border-color: var(--simple-color);
+}
+
+input[type="file"]::file-selector-button {
+    background-color: var(--buttonColor);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: var(--simple-color);
+}
+
+@media (max-width: 768px) {
+    .image-preview {
+        max-width: 100%;
+    }
+}
+

@@ -6,14 +6,18 @@ const HostVanDetails = () => {
     const { id } = useParams()
     const [currentVan, setCurrentVan] = useState<VansType | null>(null)
     const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<ErrorType | null>(null);
+    const [error, setError] = useState<ErrorType | null>(null);
+    
     useEffect( () => {
       const fetchData = async () => {
         if(!id) return;
         try{
           const data = await getVan(id);
-          setCurrentVan(data as VansType);
+          console.log("the data is", data)
+          setCurrentVan(data);
+          
         }catch(error){
+            console.log("The error is",error)
           setError(error as ErrorType);
         }finally{
           setLoading(false);
@@ -29,6 +33,15 @@ const HostVanDetails = () => {
     if(error) {
         return <div>Error: {error.message}</div>
     }
+    let backgroundColor:string = "";
+    if ( currentVan && currentVan.type === "Simple") {
+      backgroundColor = "#E17654";
+    } else if (currentVan && currentVan.type === "Rugged") {
+      backgroundColor = "#115E59";
+    } else if(currentVan && currentVan.type === "Luxury") {
+      backgroundColor = "#161616";
+    }
+
   return (
     <div className="host-van-detail-container">
         <button>
@@ -40,7 +53,7 @@ const HostVanDetails = () => {
         <div className="first-row">
             <img src={currentVan?.imageUrl} alt="van" />
             <div className="temp">
-                <button style={{ backgroundColor : "#E17654"}}>Simple</button>
+                <button style={{ backgroundColor : backgroundColor, color: "white"}}>{currentVan?.type}</button>
                 <h2>{currentVan?.name}</h2>
                 <p id="price">{currentVan?.price}/day</p>
             </div>

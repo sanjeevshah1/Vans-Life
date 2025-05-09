@@ -34,7 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="about" element={<About />} />
           <Route path="vans" element={<Vans />} />
           <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route path="login/register" element={<Register />} />
           <Route path="vans/:id" element={<VanDetail />} />
           <Route  element={<AuthRequired/>}>
             <Route path="host" element={<HostLayout />}>

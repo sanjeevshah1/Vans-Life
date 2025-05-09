@@ -9,7 +9,7 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
     try{
         const accessToken = get(req, "headers.authorization", "").replace(/^Bearer\s/, "");
         const refreshToken = get(req, "headers.x-refresh")
-        console.log("The refresh Token is", refreshToken)
+        console.log("The access Token is", accessToken)
     if(!accessToken) {
         return next();
     }
