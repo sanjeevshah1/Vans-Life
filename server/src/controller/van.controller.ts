@@ -99,7 +99,7 @@ export async function updateVanController(req: Request, res: Response): Promise<
         const { id } = req.params;
         const updates = req.body;
         const updatedVan = await updateVan({id , updates});
-        res.status(200).json({message: "Van updated succesfully", data: updateVan});
+        res.status(200).json({message: "Van updated succesfully", data: updatedVan});
     }catch(error: unknown){
         console.error("Error getting vans:", error);
         if (error instanceof Error) {

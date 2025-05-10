@@ -2,7 +2,9 @@
 import { useOutletContext } from "react-router-dom"
 import { VansType } from "../../types";
 const Details = () => {
-  const currentVan: VansType = useOutletContext();
+  const currentVan: VansType = useOutletContext<VansType>();
+  
+  // if (!currentVan) return <p>Loading...</p>;
   return (
     <div className="detail-container">
       <p><span>Name:</span> {currentVan.name}</p>

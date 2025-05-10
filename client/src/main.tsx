@@ -24,9 +24,11 @@ import Login from './Pages/Login.tsx'
 import AuthRequired from './Pages/Host/AuthRequired.tsx'
 import Users from './Pages/Host/Users.tsx'
 import Register from './Components/Register.tsx'
+import { Toaster } from 'sonner'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
+    <Toaster position="top-center" richColors />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<App />} />

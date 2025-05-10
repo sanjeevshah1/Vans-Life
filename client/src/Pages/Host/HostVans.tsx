@@ -48,7 +48,11 @@ const HostVans = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const createdVan = await createVan(newVan);
+            const parsedVan = {
+                ...newVan,
+                price: Number(newVan.price),
+            };
+            const createdVan = await createVan(parsedVan);
             setHostVansData(prev => prev ? [...prev, createdVan] : [createdVan]);
             setIsCreating(false);
             setNewVan({
@@ -56,7 +60,7 @@ const HostVans = () => {
                 price: 0,
                 description: '',
                 imageUrl: '',
-                type: 'imple'
+                type: 'simple'
             });
         } catch (error) {
             setError(error as ErrorType);
@@ -67,16 +71,12 @@ const HostVans = () => {
         const { name, value } = e.target;
         setNewVan(prev => ({
             ...prev,
-            [name]: name === 'price' ? Number(value) : value
-        }));
+            [name]: name === 'price' ? value : value
+        }));        
     };
     
     if(loading) {
         return <div>Loading......</div>
-    }
-    
-    if(error) {
-        return <div>Error: {error.message}</div>
     }
 
     return (
@@ -89,6 +89,7 @@ const HostVans = () => {
                     </button>
                 )}
             </div>
+            {error && <div>{error.message}</div>}
             {isCreating ? (
                 <form onSubmit={handleSubmit} className="create-van-form">
                     <div className="form-group">
@@ -117,7 +118,7 @@ const HostVans = () => {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="price">Price:</label>
+                        <label htmlFor="price">Price (in $):</label>
                         <input
                             type="number"
                             id="price"

@@ -4,7 +4,6 @@ import { AnyZodObject, ZodError } from "zod";
 //This technique is called Currying
 const validate = (schema : AnyZodObject)=> (req: Request, res: Response, next : NextFunction) : void =>{
     try{
-        console.log("validating", schema)
         schema.parse({
             body: req.body,
             params: req.params,
@@ -14,6 +13,7 @@ const validate = (schema : AnyZodObject)=> (req: Request, res: Response, next : 
     }catch(error : unknown){
     
         if(error instanceof ZodError){
+            // console.log(error)
             const formattedError = error.issues.map((err) => {
                 const cleanedPath = err.path[0] === "body" ? err.path.slice(1).join(".") : err.path.join(".");
                     return {
@@ -21,7 +21,7 @@ const validate = (schema : AnyZodObject)=> (req: Request, res: Response, next : 
                         message: err.message
                     }
                 })
-                
+                console.log(formattedError)
             res.status(400).send({
                 success: false,
                 errors: formattedError

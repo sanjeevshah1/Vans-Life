@@ -10,8 +10,8 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    userType: "user" // Default to "user"
+    passwordConfirmation: "",
+    role: "user" // Default to "user"
   });
   
   const [showPassword, setShowPassword] = useState(false);
@@ -29,15 +29,17 @@ const Register = () => {
   const handleUserTypeChange = (value: string) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      userType: value
+      role: value
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Executing handle submit")
     
     // Validate password confirmation
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.passwordConfirmation) {
+      console.log("Showing toast: passwords don't match");
       toast.error("Passwords don't match");
       return;
     }
@@ -53,24 +55,27 @@ const Register = () => {
     
     try {
       // Send without confirmPassword
-      const { confirmPassword, ...dataToSend } = formData;
       
       const res = await fetch('http://localhost:1337/api/users', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSend)
+        body: JSON.stringify(formData)
       });
       
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => null);
-        throw new Error(errorData?.message || "User Registration failed");
+      if(!res.ok){
+        const errorData = await res.json().catch()
+        const errorMessage = Array.isArray(errorData?.errors)
+          ? errorData.errors.map((err: any) => `${err.message}`).join(", ")
+          : "User Registration failed";
+        throw new Error(errorMessage);
       }
       
       toast.success("Registration successful!");
       navigate("/login", { replace: true });
     } catch (error: unknown) {
+      console.log("error : ", error)
       toast.error(`Error: ${(error instanceof Error) ? error.message : "Unknown error"}`);
     } finally {
       setIsLoading(false);
@@ -95,7 +100,7 @@ const Register = () => {
                 id="name"
                 type="text"
                 name="name"
-                placeholder="John Doe"
+                placeholder="Ram Kumar"
                 required
                 value={formData.name}
                 onChange={handleChange}
@@ -109,7 +114,7 @@ const Register = () => {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="john@example.com"
+                placeholder="ram@example.com"
                 required
                 value={formData.email}
                 onChange={handleChange}
@@ -142,16 +147,16 @@ const Register = () => {
             </div>
             
             <div className="form-group">
-              <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
+              <label className="form-label" htmlFor="passwordConfirmation">Confirm Password</label>
               <div className="password-input-container">
                 <input
                   className="form-input"
-                  id="confirmPassword"
+                  id="passwordConfirmation"
                   type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
+                  name="passwordConfirmation"
                   placeholder="••••••••"
                   required
-                  value={formData.confirmPassword}
+                  value={formData.passwordConfirmation}
                   onChange={handleChange}
                 />
                 <button 
@@ -175,7 +180,7 @@ const Register = () => {
                     id="user"
                     name="userType"
                     value="user"
-                    checked={formData.userType === "user"}
+                    checked={formData.role === "user"}
                     onChange={() => handleUserTypeChange("user")}
                   />
                   <label htmlFor="user">User</label>
@@ -187,7 +192,7 @@ const Register = () => {
                     id="host"
                     name="userType"
                     value="host"
-                    checked={formData.userType === "host"}
+                    checked={formData.role === "host"}
                     onChange={() => handleUserTypeChange("host")}
                   />
                   <label htmlFor="host">Host</label>

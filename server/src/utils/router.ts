@@ -25,5 +25,4 @@ const router = (app: Express) => {
 
 
 }
-
 export default router;

@@ -447,14 +447,10 @@ line-height: 1.8em;
 #price{
 font-size: 1.2rem;
 font-weight: 600;
-line-height: 1.8em;
-margin-top: -10px;
 color: var(--blackWhite);
 }
 #description{
-font-size: 1.5rem;
 font-weight: 500;
-line-height: 2.5rem;
 color: var(--blackWhite);
 }
 
@@ -504,10 +500,10 @@ margin-right: 10px;
   width: 20px;
   margin: 2px;
 }
-.listed-vans{
+.users{
   padding: 2em 1.625em 4em 1.625em;
 }
-.users{
+.listed-vans{
   padding: 2em 1.625em 4em 1.625em;
 }
 .head{
@@ -650,81 +646,322 @@ font-weight: 600;
   ;
 }
 
-/* Host Vans Details CSS */
-.host-van-detail-container{
-  padding: 2em 1.6em 2em 1.6em;
+/* Host Van Details Container */
+.host-van-detail-container {
+  padding: 2em 4em 2em 4em;
 }
 
-/* Van Detail CSS */
-.detail-container{
-  padding: 1.625em;
+/* Detail Header with Back Button and Edit Button */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2em;
 }
-#back{
+
+.back-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-dark, #161616);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--primary-color, #FF8C38);
+}
+
+#back {
   text-decoration: underline;
-  margin-left: 10px;
+  margin-left: 8px;
+  font-size: 1rem;
 }
-.host-detail{
-  padding: 1em;
-  background-color: #FFFFFF;
-  margin-top: 2em;
+
+.edit-van-button {
+  background-color: var(--primary-color, #FF8C38);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.6em 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
-.first-row{
+
+.edit-van-button:hover {
+  background-color: var(--primary-hover, #eb7b2a);
+  transform: translateY(-2px);
+}
+
+
+.edit-mode {
+  padding-bottom: 3em;
+}
+
+.edit-mode h2 {
+  margin-top: 0;
+  margin-bottom: 1.5em;
+  color: var(--text-dark, #161616);
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+  padding-bottom: 1em;
+}
+
+/* First Row with Image and Van Info */
+.first-row {
   display: flex;
   column-gap: 40px;
   align-items: center;
+  margin-bottom: 2em;
 }
-.first-row img{
-  width: 15%;
-  height: 15%;
-}
-.temp{
-display: flex;
-flex-direction: column;
-row-gap: 8px;
 
+.van-image {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-.temp button{
-  width: 7.5em;
-  height: 2.2em;
+
+.van-info {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+}
+
+.van-info h2 {
+  font-size: 1.8rem;
+  margin: 8px 0;
+  color: var(--text-dark, #161616);
+}
+
+.van-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-dark, #161616);
+  margin: 0;
+}
+
+.van-type-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  width: fit-content;
+}
+
+/* Navigation Styles */
+.host-van-detail-nav {
+  display: flex;
+  border-top: 1px solid var(--border-color, #e0e0e0);
+  padding-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.nav-link {
+  margin-right: 24px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-muted, #777);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 5px;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--text-dark, #161616);
+}
+
+.current-link {
+  color: var(--text-dark, #161616);
+  font-weight: 600;
+}
+
+/* Outlet Container */
+.outlet-container {
+  background-color: var(--background-light, #f8f8f8);
+  border-radius: 8px;
+  padding: 1.5em;
+}
+
+/* Form Styling for Edit Mode */
+.edit-van-form {
+  background-color: var(--background-light, #f8f8f8);
+  padding: 2em;
   border-radius: 10px;
-  margin-bottom: 10px;
-  margin-top: -40px;
 }
-.temp h2{
-  font-size: 28px;
+
+.form-group {
+  margin-bottom: 1.5em;
 }
-.host-van-detail-nav{
-padding: 1em;
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--label-color, #4d4d4d);
 }
-.host-van-detail-nav a{
-  margin-right: 10px;
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--input-border, #e0e0e0);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color, #FF8C38);
+  box-shadow: 0 0 0 3px rgba(255, 140, 56, 0.15);
+}
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 2em;
+}
+
+
+.save-button {
+  background-color: var(--primary-color, #FF8C38);
+  color: white;
+  border: none;
+}
+
+.save-button:hover:not([disabled]) {
+  background-color: var(--primary-hover, #eb7b2a);
+  transform: translateY(-2px);
+}
+
+.cancel-button {
+  background-color: white;
+  color: var(--text-dark, #161616);
+  border: 1px solid var(--border-color, #e0e0e0);
+}
+
+.cancel-button:hover:not([disabled]) {
+  background-color: var(--cancel-hover, #f1f1f1);
+}
+
+.save-button:disabled,
+.cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading State */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4em 0;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--primary-color, #FF8C38);
+  animation: spin 1s infinite linear;
+  margin-bottom: 1em;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner p {
+  color: var(--text-muted, #777);
+  font-weight: 500;
+}
+
+/* Error Message */
+.error-message {
+  background-color: #fff0f0;
+  border-left: 4px solid #ff3b30;
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+  border-radius: 6px;
+}
+
+.error-message p {
+  color: #d72618;
+  margin: 0 0 1em 0;
+  font-weight: 500;
+}
+
+.back-button {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #efefef;
+}
+
+/* Detail Container Content Styling */
+.detail-container p {
   font-size: 1rem;
   font-weight: 500;
-  color: var(--daysColor);
+  color: var(--text-dark, #161616);
+  line-height: 1.6;
+  margin: 0.5em 0;
 }
 
-/* Host Van Detail CSS */
-.detail-container p{
-font-size: 0.9rem;
-font-weight: 500;
-color: var(--luxury-color);
-line-height: 21.46px;
-letter-spacing: 1px
+.detail-container p span {
+  font-weight: 700;
 }
-.detail-container p span{
-font-size: 0.9rem;
-font-weight: 700;
-}
-.transaction{
-  justify-content: space-between;
-}
-/* Price Page Css */
-.price-container{
-  padding: 1.625em;
-}
-.price-container img{
-  width: 15%;
-  height: 15%;
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .host-van-detail-container {
+    padding: 1.5em 1.5em;
+  }
+  
+  .first-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .van-image {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+  }
+  
+  .host-van-detail-nav {
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+  }
 }
 
 /* Page Not Found CSS */

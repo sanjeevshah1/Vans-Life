@@ -9,7 +9,7 @@ const Login = () => {
         email: "",
         password: "",
     })
-
+    console.log(formData)
      const [status, setStatus] = useState<"idle" |  "submitting">("idle");
      const [error, setError] = useState<null | ErrorType>(null);
 

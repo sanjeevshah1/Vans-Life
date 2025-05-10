@@ -14,7 +14,7 @@ export const createUserSchema = z.object({
         email: z.string({
             required_error: "Email is required",
         }).email("Not a valid email"),
-        role: z.enum(['user', 'host']).optional().default('user'),
+        role: z.enum(['user', 'host'], {required_error: "Role is required"}),
     }).refine((data) => data.password === data.passwordConfirmation, 
     { message: "Passwords do not match", path: ["passwordConfirmation"] }
 ),

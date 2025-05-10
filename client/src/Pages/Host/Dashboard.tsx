@@ -53,7 +53,7 @@ const Dashboard = () => {
                 <p>View all</p>
             </div>
             {vans.map((van)=>(
-                <div className="van-box" key={van.id}>
+                <div className="van-box" key={van._id}>
                     <img src={van.imageUrl} alt={van.name} />
                     <div className="van-explain">
                         <p>{van.name}</p>
