@@ -11,16 +11,31 @@ import sessionRouter from "../routes/session.route";
 import vansRouter from "../routes/vans.route";
 import { getVansController } from "../controller/van.controller";
 const router = (app: Express) => {
-    // Public routes
     app.post('/api/login', validate(createSessionSchema), createUserSessionHandler);
+    // @route POST /api/login
+    // @desc login user
+    // @access Registered User
+
     app.post('/api/logout', logoutHandler);
+     // @route POST /api/logout
+    // @desc logout user
+    // @access Logged In User
+    
     
     // Protected routes
     app.use('/api/host',hostRouter);
+     // @route /api/host/......
+    // @desc host routes
+    // @access host
+
     app.use('/api/users',userRouter);
+     // @route /api/users/....
+    // @desc users routes
+    // @access users
 
     // Session routes
     app.use('/api/sessions',sessionRouter)
+
     app.get('/api/vans', getVansController);
 
 
